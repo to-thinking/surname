@@ -86,7 +86,7 @@ class MDAvatars
         $Height       = $this->AvatarSize;//Height of avatar
         $Padding      = $this->Padding;
         $this->Avatar = imagecreate ($Width, $Height);
-        $path = './src/Group Copy '.mt_rand(18,26).'.png';
+        $path = './src/Group Copy '.mt_rand(18,24).'.png';
         $old = imagecreatefrompng($path);
         list($oldWidth, $oldHeight) = getimagesize($path);
         imagecopyresampled($this->Avatar, $old, 0, 0, 0, 0, $Width, $Height, $oldWidth, $oldHeight);
