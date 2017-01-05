@@ -86,6 +86,10 @@ class MDAvatars
         $Height       = $this->AvatarSize;//Height of avatar
         $Padding      = $this->Padding;
         $this->Avatar = imagecreate ($Width, $Height);
+        $path = './src/Group Copy '.mt_rand(18,26).'.png';
+        $old = imagecreatefrompng($path);
+        list($oldWidth, $oldHeight) = getimagesize($path);
+        imagecopyresampled($this->Avatar, $old, 0, 0, 0, 0, $Width, $Height, $oldWidth, $oldHeight);
 
         //$this->Avatar = new gd_gradient_fill(400,200,'ellipse','#f00','#000',0);
         //header('Content-Type: image/png');
@@ -94,34 +98,37 @@ class MDAvatars
         // imageSaveAlpha($this->Avatar, true);
         // $BackgroundAlpha = imagecolorallocatealpha($this->Avatar, 213, 0, 0, 0);
         // imagefill($this->Avatar, 0, 0, $BackgroundAlpha);
-        //抗锯齿
+        //
+          if (function_exists('imageantialias')) {
+            imageantialias($this->Avatar, true);
+        }
 
         //Material Design参考颜色
         //http://www.google.com/design/spec/style/color.html#color-color-palette
-        // $MaterialDesignColor  = [
+        $MaterialDesignColor  = [
             // [[167,55,55],[120,40,40]],
             // [[52,138,199],[116,116,191]],
             // [[72,85,99],[41,50,60]],
             // [[238,168,73],[244,107,69]],
             // [[229,57,53],[227,93,91]],
             // [[0,92,151],[54,55,149]],
-        //     [[ 98, 155, 241] , [ 51, 97, 222]] ,
-        //     [[ 102, 201, 247],[ 53, 152, 236]],
-        //     [[ 127, 206, 181],[ 72, 160, 126]],
-        //     [[64, 159, 250],[ 30, 102 ,242]],
-        //     [[ 61 ,219 ,167],[ 28, 181, 111]],
-        //     [[100, 128, 151],[ 52, 73, 94]],
-        //     [[66, 186, 211],[ 31 ,132, 168]],
-        //     [[130, 168, 230],[ 75, 111, 201]],
-        //     [[176, 214 ,80],[ 120, 172, 40]],
-        //     [[44 ,135 ,177],[ 20, 79, 121]],
-        //     [[ 100, 150 ,134],[ 52, 93, 78]],
-        //     [[ 37 ,195, 201],[16, 144, 153]],
-        //     [[ 0 ,178 ,173],[ 0, 123 ,117]],
-        //     [[ 89, 101, 149],[ 45 ,53 ,92]],
-        //     [[ 163 ,189 ,136],[ 106, 136, 80]],
-        //     [[ 86, 187, 100],[ 43, 133 ,52]],
-        // ];
+            [[ 98, 155, 241] , [ 51, 97, 222]] ,
+            [[ 102, 201, 247],[ 53, 152, 236]],
+            [[ 127, 206, 181],[ 72, 160, 126]],
+            [[64, 159, 250],[ 30, 102 ,242]],
+            [[ 61 ,219 ,167],[ 28, 181, 111]],
+            [[100, 128, 151],[ 52, 73, 94]],
+            [[66, 186, 211],[ 31 ,132, 168]],
+            [[130, 168, 230],[ 75, 111, 201]],
+            [[176, 214 ,80],[ 120, 172, 40]],
+            [[44 ,135 ,177],[ 20, 79, 121]],
+            [[ 100, 150 ,134],[ 52, 93, 78]],
+            [[ 37 ,195, 201],[16, 144, 153]],
+            [[ 0 ,178 ,173],[ 0, 123 ,117]],
+            [[ 89, 101, 149],[ 45 ,53 ,92]],
+            [[ 163 ,189 ,136],[ 106, 136, 80]],
+            [[ 86, 187, 100],[ 43, 133 ,52]],
+        ];
 
         $steps = 127;
         $x1= 0;$x2 = $Width;$y1 = 0;$y2 = $Height;
@@ -135,81 +142,29 @@ class MDAvatars
                 // $MaterialDesignColor[$Index][0][2]-floor($i*($MaterialDesignColor[$Index][0][2]-$MaterialDesignColor[$Index][1][2])/$steps),
                 // 0
             );
-             imagefilledrectangle($this->Avatar, $y1,$i,$y2 ,$i , $alpha);
+             imagefilledrectangle($this->Avatar, $y1,0,$y2 ,0 , $alpha);
         // }
 
         //exit;
         if (function_exists('imageantialias')) {
             imageantialias($this->Avatar, true);
         }
-
-        // 2DBDA8:45,189,168
-        // 353C45:53,60,69
-        // D9A322:217,163,34
-        // E76D3B:231,109,59
-        // CC3E4A:204,62,74
-        // D96EAE:217,110,174
-        // 7049A3:112,73,163
-        $bgcolor = rand(1,7);
-        switch ($bgcolor) {
-            case 1:
-                $a = 45;
-                $b = 189;
-                $c = 168;
-                break;
-            case 2:
-                $a = 53;
-                $b = 60;
-                $c = 69;
-                break;
-            case 3:
-                $a = 217;
-                $b = 163;
-                $c = 34;
-                break;
-            case 4:
-                $a = 231;
-                $b = 109;
-                $c = 59;
-                break;
-            case 5:
-                $a = 204;
-                $b = 62;
-                $c = 74;
-                break;
-            case 6:
-                $a = 217;
-                $b = 110;
-                $c = 174;
-                break;
-            case 7:
-                $a = 112;
-                $b = 73;
-                $c = 163;
-                break;
-            default:
-                # code...
-                break;
-        }
-
         //画一个居中圆形
-        imagefilledellipse($this->Avatar,
-            $Width / 2,
-            $Height / 2,
-            $Width,
-            $Height,
-            imagecolorallocate($this->Avatar,$a,$b,$c)
-        );
-
-        
+        // imagefilledellipse($this->Avatar,
+        //     $Width / 2,
+        //     $Height / 2,
+        //     $Width,
+        //     $Height,
+        //     imagecolorallocate($this->Avatar, 0, 0, 0)
+        // );
 
         //字体
         $FontColor = imagecolorallocate($this->Avatar, 255, 255, 255);
         if ($this->IsNotLetter) {
             //中文字符偏移
-            $FontSize = 40;
-            $X        = 33;
-            $Y        = 79;
+            $FontSize = 120;
+            $X        = 70;
+            $Y        = 210;
         } else {
             $FontSize = $Width - $Padding * 2;
             $X        = $Padding + (20 / 196) * $FontSize;

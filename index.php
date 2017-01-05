@@ -504,15 +504,15 @@ $str = ['赵',
 '覃',
 '过',
 ];
-// foreach ($str as $key => $value) {
-// 	$Avatar = new MDAvatars($value, 120);
-// 	$Avatar->Save('./avatars/name_'.md5($value).'.png', 256);
-// 	$Avatar->Free();
-// }
-	$Avatar = new MDAvatars('郝', 120);
-	$Avatar->Save('./avatars/name_'.md5('郝').'.png', 256);
+foreach ($str as $key => $value) {
+	$Avatar = new MDAvatars($value, 300);
+	$Avatar->Save('./avatars/name_'.md5($value).'.png', 256);
 	$Avatar->Output2Browser();
-	$Avatar->Free();
+}
+	// $Avatar = new MDAvatars('园', 300);
+	// $Avatar->Save('./avatars/name_'.md5('肖').'.png', 256);
+	// $Avatar->Output2Browser();
+	// $Avatar->Free();
 
 
 
